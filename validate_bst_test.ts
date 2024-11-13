@@ -13,28 +13,53 @@ class TreeNode {
 
 let flag: boolean = true;
 let previous: TreeNode | null = null;
+let prev_min: number | null = null;
+let prev_max: number | null = null;
 
 function isValidBST(root: TreeNode | null): boolean {
-  helper(root);
-  return flag
+  helperV2(root, null, null, prev_min, prev_max);
+  return flag;
 }
 
 function helper(root: TreeNode | null) {
   if (root == null) return;
-  
-  helper(root.left)
+
+  helper(root.left);
 
   if (previous != null && previous.val >= root.val) {
     flag = false;
   }
-  previous = root
+  previous = root;
 
-  helper(root.right)
+  helper(root.right);
+}
+
+function helperV2(
+  root: TreeNode | null,
+  min: number | null,
+  max: number | null,
+  previous_min: number | null,
+  previous_max: number | null
+) {
+  if (root == null) return;
+
+  if (min != null && root.val <= min) {
+    flag = false;
+  }
+
+  if (max != null && root.val >= max) {
+    flag = false;
+  }
+
+  helperV2(root.left, min, root.val, min, max);
+  helperV2(root.right, root.val, max, min, max);
+  prev_min = previous_min;
+  prev_max = previous_max;
 }
 
 describe("Find Max Profit", () => {
   it("Happy Path", () => {
-    let root = new TreeNode(0)
+    let root = new TreeNode(0);
     expect(isValidBST(root)).toStrictEqual(true);
   });
 });
