@@ -11,21 +11,25 @@ class TreeNode {
   }
 }
 
-let result = 0;
 function sumNumbers(root: TreeNode | null): number {
-  helper(root, result);
-  return result;
-}
+  // Global Variable
+  let result = 0;
 
-function helper(root: TreeNode | null, currentSum: number) {
-  if (root == null) return;
-  let newSum: number = currentSum * 10 + root.val;
-  if (root.left == null && root.right == null) {
-    result += newSum;
+  // Recursive Function
+  function helper(root: TreeNode | null, currentSum: number) {
+    if (root == null) return;
+    let newSum: number = currentSum * 10 + root.val;
+    if (root.left == null && root.right == null) {
+      result += newSum;
+    }
+
+    helper(root.left, newSum);
+    helper(root.right, newSum);
   }
 
-  helper(root.left, newSum);
-  helper(root.right, newSum);
+  // Main Code
+  helper(root, result);
+  return result;
 }
 
 describe("Find Max Profit", () => {
